@@ -2,8 +2,10 @@
 
 public class BaseInput : MonoBehaviour
 {
-    public delegate void MoveEventHandler(ObjectActions p_MovementDirection);
+    public delegate void MoveEventHandler(ObjectActions p_MovementDirection, float p_SpeedCoeff);
     public event MoveEventHandler MoveEvent;
+
+    private float m_SpeedCoef = 0.0f;
 
     protected virtual void Awake()
     {
@@ -12,11 +14,13 @@ public class BaseInput : MonoBehaviour
 
     private void Update()
     {
+        m_SpeedCoef = Input.GetAxis("Horizontal");
+
         if (Input.GetKey(KeyCode.A))
         {
             if (MoveEvent != null)
             {
-                MoveEvent(ObjectActions.GOING_LEFT);
+                MoveEvent(ObjectActions.GOING_LEFT, m_SpeedCoef);
             }
         }
 
@@ -24,7 +28,7 @@ public class BaseInput : MonoBehaviour
         {
             if (MoveEvent != null)
             {
-                MoveEvent(ObjectActions.GOING_RIGHT);
+                MoveEvent(ObjectActions.GOING_RIGHT, m_SpeedCoef);
             }
         }
 
@@ -32,7 +36,7 @@ public class BaseInput : MonoBehaviour
         {
             if (MoveEvent != null)
             {
-                MoveEvent(ObjectActions.STOP_RUN);
+                MoveEvent(ObjectActions.STOP_RUN, m_SpeedCoef);
             }
         }
 
@@ -40,7 +44,7 @@ public class BaseInput : MonoBehaviour
         {
             if (MoveEvent != null)
             {
-                MoveEvent(ObjectActions.JUMP);
+                MoveEvent(ObjectActions.JUMP, m_SpeedCoef);
             }
         }
     }

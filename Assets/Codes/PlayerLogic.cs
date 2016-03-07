@@ -41,7 +41,7 @@ namespace Logic
         public void CannotMove()
         {
             m_BaseInput.MoveEvent -= m_BaseMovement.Move;
-            m_BaseMovement.Move(ObjectActions.STOP_RUN);            
+            m_BaseMovement.Move(ObjectActions.STOP_RUN);
         }
     }
 }

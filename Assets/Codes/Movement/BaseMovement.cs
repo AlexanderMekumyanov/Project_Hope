@@ -15,9 +15,11 @@ namespace Movement
 
         private Transform   m_Transform;
         private Rigidbody2D m_RigidBody;
-        private float       m_CurrentSpeed = 0.0f;
-        private bool        m_IsGrounded = true;
-        private Direction   m_Direction = Direction.RIGHT;
+        private float       m_CurrentSpeed   = 0.0f;
+        private bool        m_IsGrounded     = true;
+        private bool        m_PrevIsGrounded = true;
+        private Direction   m_Direction      = Direction.RIGHT;
+        private float       m_SpeedCoeff = 0.0f;
 
         [SerializeField]
         private float m_Speed = 0.0f;
@@ -34,7 +36,7 @@ namespace Movement
             m_RigidBody = GetComponent<Rigidbody2D>();
         }
 
-        public void Move(ObjectActions p_ObjectActions)
+        public void Move(ObjectActions p_ObjectActions, float p_SpeedCoeff = 0.0f)
         {
             switch (p_ObjectActions)
             {
@@ -49,7 +51,10 @@ namespace Movement
                     m_Direction = Direction.RIGHT;
                     break;
                 case ObjectActions.STOP_RUN:
-                    m_CurrentSpeed = 0.0f;
+                    if (m_IsGrounded)
+                    {
+                        m_CurrentSpeed = 0.0f;
+                    }
                     break;
                 case ObjectActions.JUMP:
                     if (m_IsGrounded)
@@ -58,11 +63,17 @@ namespace Movement
                     }
                     break;
             }
+            m_SpeedCoeff = p_SpeedCoeff;
         }
 
         protected virtual void FixedUpdate()
         {
             m_IsGrounded = Physics2D.OverlapCircle(m_CheckGround.position, m_CheckGround.radius, m_CheckGround.ground);
+
+            if (m_IsGrounded == true && m_PrevIsGrounded == false)
+            {
+                Move(ObjectActions.STOP_RUN);
+            }
 
             if (PlayBoolAnimEvent != null)
             {
@@ -73,11 +84,18 @@ namespace Movement
             {
                 m_RigidBody.velocity = new Vector2(m_CurrentSpeed * (int)m_Direction, m_RigidBody.velocity.y);
             }
+            else
+            {
+                //m_RigidBody.velocity = new Vector2(m_CurrentSpeed * m_SpeedCoeff, m_RigidBody.velocity.y);
+                m_RigidBody.velocity = new Vector2(m_CurrentSpeed * (int)m_Direction, m_RigidBody.velocity.y);
+            }
 
             if (PlayFloatAnimEvent != null)
             {
                 PlayFloatAnimEvent(ObjectActions.GOING, m_CurrentSpeed);
             }
+
+            m_PrevIsGrounded = m_IsGrounded;
         }
 
         public void Jump()

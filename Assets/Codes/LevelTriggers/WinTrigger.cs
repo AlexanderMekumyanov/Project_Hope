@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using Logic;
+using UI;
 
 public class WinTrigger : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class WinTrigger : MonoBehaviour
         m_Animator.SetTrigger("WIN");
         m_PlayerLogic.CannotMove();
 
-        m_WinWindow.gameObject.SetActive(true);
+        ScreenSystem.instance.Interactive(true);        
         m_WinWindow.Show();
     }
 }

@@ -1,33 +1,36 @@
 ﻿using System;
 using UnityEngine;
 
-public enum ButtonType
+namespace UI
 {
-    RESTART,
-    QUIT
-}
-
-public class WinWindow : MonoBehaviour
-{
-    private Animator m_Animator = null;
-
-    private void Awake()
+    public enum ButtonType
     {
-        m_Animator = GetComponent<Animator>();
+        RESTART,
+        QUIT
     }
 
-    public void Restart()
+    public class WinWindow : MonoBehaviour
     {
-        Application.LoadLevel("TestScene");
-    }
+        private Animator m_Animator = null;
 
-    public void Quit()
-    {
-        Application.Quit();
-    }
+        private void Awake()
+        {
+            m_Animator = GetComponent<Animator>();
+        }
 
-    public void Show()
-    {
-        m_Animator.SetTrigger("SHOW");
+        public void Restart()
+        {
+            Application.LoadLevel("TestScene");
+        }
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
+
+        public void Show()
+        {
+            m_Animator.SetTrigger("SHOW");
+        }
     }
 }

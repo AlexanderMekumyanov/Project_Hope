@@ -4,13 +4,13 @@ namespace Movement
 {
     public class BaseMovement : MonoBehaviour
     {
-        public delegate void PlayActionAnimHandler(ObjectActions p_ObjectActions);
+        public delegate void PlayActionAnimHandler(ObjectAnimations p_ObjectActions);
         public event PlayActionAnimHandler PlayActionAnimEvent;
 
-        public delegate void PlayFloatAnimHandler(ObjectActions p_ObjectActions, float value);
+        public delegate void PlayFloatAnimHandler(ObjectAnimations p_ObjectActions, float value);
         public event PlayFloatAnimHandler PlayFloatAnimEvent;
 
-        public delegate void PlayBoolAnimHandler(ObjectActions p_ObjectActions, bool value);
+        public delegate void PlayBoolAnimHandler(ObjectAnimations p_ObjectActions, bool value);
         public event PlayBoolAnimHandler PlayBoolAnimEvent;
 
         private Transform   m_Transform;
@@ -20,6 +20,7 @@ namespace Movement
         private bool        m_PrevIsGrounded = true;
         private Direction   m_Direction      = Direction.RIGHT;
         private float       m_SpeedCoeff = 0.0f;
+        private ConstantForce2D m_ConstantForce = null;
 
         [SerializeField]
         private float m_Speed = 0.0f;
@@ -30,10 +31,14 @@ namespace Movement
         [SerializeField]
         private GroundCheck m_CheckGround = null;
 
+        [SerializeField]
+        private float m_JumpAirForce = 0.0f;
+
         protected virtual void Awake()
         {
             m_Transform = transform;
             m_RigidBody = GetComponent<Rigidbody2D>();
+            m_ConstantForce = GetComponent<ConstantForce2D>();
         }
 
         public void Move(ObjectActions p_ObjectActions, float p_SpeedCoeff = 0.0f)
@@ -56,10 +61,16 @@ namespace Movement
                         m_CurrentSpeed = 0.0f;
                     }
                     break;
-                case ObjectActions.JUMP:
+                case ObjectActions.JUMP_START:
                     if (m_IsGrounded)
                     {
                         Jump();
+                    }
+                    break;
+                case ObjectActions.JUMP_END:
+                    if (!m_IsGrounded)
+                    {
+                        EndJump();
                     }
                     break;
             }
@@ -68,7 +79,7 @@ namespace Movement
 
         protected virtual void FixedUpdate()
         {
-            m_IsGrounded = Physics2D.OverlapCircle(m_CheckGround.position, m_CheckGround.radius, m_CheckGround.ground);
+            m_IsGrounded = Physics2D.Linecast(m_Transform.position, m_CheckGround.position, 1 << LayerMask.NameToLayer("Ground"));
 
             if (m_IsGrounded == true && m_PrevIsGrounded == false)
             {
@@ -77,7 +88,7 @@ namespace Movement
 
             if (PlayBoolAnimEvent != null)
             {
-                PlayBoolAnimEvent(ObjectActions.GROUNDED, m_IsGrounded);
+                PlayBoolAnimEvent(ObjectAnimations.IDLE, m_IsGrounded);
             }
 
             if (m_IsGrounded)
@@ -86,13 +97,12 @@ namespace Movement
             }
             else
             {
-                //m_RigidBody.velocity = new Vector2(m_CurrentSpeed * m_SpeedCoeff, m_RigidBody.velocity.y);
-                m_RigidBody.velocity = new Vector2(m_CurrentSpeed * (int)m_Direction, m_RigidBody.velocity.y);
+                m_RigidBody.velocity = new Vector2(m_CurrentSpeed * m_SpeedCoeff, m_RigidBody.velocity.y);                
             }
 
             if (PlayFloatAnimEvent != null)
             {
-                PlayFloatAnimEvent(ObjectActions.GOING, m_CurrentSpeed);
+                PlayFloatAnimEvent(ObjectAnimations.GOING, m_CurrentSpeed);
             }
 
             m_PrevIsGrounded = m_IsGrounded;
@@ -101,11 +111,16 @@ namespace Movement
         public void Jump()
         {
             m_RigidBody.AddForce(new Vector2(m_JumpForce.x, m_JumpForce.y));
-
+            m_ConstantForce.force = new Vector2(m_ConstantForce.force.x, m_JumpAirForce);
             if (PlayActionAnimEvent != null)
             {
-                PlayActionAnimEvent(ObjectActions.JUMP);
+                PlayActionAnimEvent(ObjectAnimations.JUMPING);
             }
+        }
+
+        public void EndJump()
+        {
+            m_ConstantForce.force = new Vector2(m_ConstantForce.force.x, 0);
         }
     }
 }

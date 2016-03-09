@@ -1,9 +1,8 @@
 ﻿public enum ObjectActions
 {
-    GOING,
+    JUMP_START,
+    JUMP_END,
     GOING_RIGHT,
     GOING_LEFT,
-    JUMP,
     STOP_RUN,
-    GROUNDED
 }

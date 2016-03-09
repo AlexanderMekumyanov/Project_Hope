@@ -11,17 +11,17 @@ namespace Animations
             m_Animator = GetComponentInChildren<Animator>();
         }
 
-        public void PlayAnimation(ObjectActions p_ObjectActions)
+        public void PlayAnimation(ObjectAnimations p_ObjectActions)
         {
             m_Animator.SetTrigger(p_ObjectActions.ToString());
         }
 
-        public void PlayAnimation(ObjectActions p_ObjectActions, float p_Value)
+        public void PlayAnimation(ObjectAnimations p_ObjectActions, float p_Value)
         {
             m_Animator.SetFloat(p_ObjectActions.ToString(), p_Value);
         }
 
-        public void PlayAnimation(ObjectActions p_ObjectActions, bool p_Value)
+        public void PlayAnimation(ObjectAnimations p_ObjectActions, bool p_Value)
         {
             m_Animator.SetBool(p_ObjectActions.ToString(), p_Value);
         }

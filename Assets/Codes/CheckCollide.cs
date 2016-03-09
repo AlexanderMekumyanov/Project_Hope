@@ -10,5 +10,4 @@ public class CheckCollide : MonoBehaviour
     {
         transform.parent.gameObject.GetComponent<WinTrigger>().Win();
     }
-
 }

@@ -13,6 +13,7 @@ GameObject:
   - 114: {fileID: 11470068}
   - 114: {fileID: 11416996}
   - 50: {fileID: 5026588}
+  - 247: {fileID: 24799230}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -28,12 +29,11 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 432682}
-  - 58: {fileID: 5801366}
   - 114: {fileID: 11468634}
   m_Layer: 0
   m_Name: GroundCheck
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1089502233064743932, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -78,7 +78,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158894}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -.699999988, z: 0}
+  m_LocalPosition: {x: .0689999983, y: -1.18499994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 464002}
@@ -138,19 +138,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &5801366
-CircleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158894}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: .5
 --- !u!58 &5807328
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -174,9 +161,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: .029635638, y: .219999999}
+  m_Offset: {x: .0296344757, y: .220000029}
   serializedVersion: 2
-  m_Size: {x: .902669966, y: 1.54064751}
+  m_Size: {x: .868675828, y: 1.54064751}
 --- !u!95 &9500104
 Animator:
   serializedVersion: 3
@@ -253,8 +240,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Speed: 6
-  m_JumpForce: {x: 0, y: 250}
+  m_JumpForce: {x: 0, y: 350}
   m_CheckGround: {fileID: 11468634}
+  m_JumpAirForce: 6
 --- !u!212 &21242074
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -283,6 +271,16 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1fc1a4500fc9eef42bac05261d6adf01, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+--- !u!247 &24799230
+ConstantForce2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 145940}
+  m_Enabled: 1
+  m_Force: {x: 0, y: 0}
+  m_RelativeForce: {x: 0, y: -10}
+  m_Torque: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

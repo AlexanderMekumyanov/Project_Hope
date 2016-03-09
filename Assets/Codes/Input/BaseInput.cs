@@ -44,7 +44,15 @@ public class BaseInput : MonoBehaviour
         {
             if (MoveEvent != null)
             {
-                MoveEvent(ObjectActions.JUMP, m_SpeedCoef);
+                MoveEvent(ObjectActions.JUMP_START, m_SpeedCoef);
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (MoveEvent != null)
+            {
+                MoveEvent(ObjectActions.JUMP_END, m_SpeedCoef);
             }
         }
     }
